@@ -1,20 +1,32 @@
+import string
+
 class CheckerBoard(object):
     # Creates the board array and populates it with checker piece objects
 
-    def __init__(self, board):
-    #declare a 2D 9x9 array
-    self.board = []
-    for x in range(9):
-        board.append[]
-    #for column 0 populate starting from index 1 with numbers 1 through 8
-    for(row in board):
-        for (col in row):
-            board[row][col]= "-";
-    #for row 0 populate starting from index 1 with letters A through H
-    #populate everything else with - 
-        return
+    def __init__(self):
+        self.board = []
 
-    def moveA(position):
+        for x in range(9):
+            self.board.append([])
+
+        for row in self.board:
+            for i in range(9):
+                row.append('-');
+
+        #for column 0 populate starting from index 1 with numbers 1 through 8
+        
+        for x in range (1,9):
+            self.board[0][x] = string.uppercase[x-1]
+
+        a = 1;
+        for y in range (1,9):
+            self.board[y][0] = a
+            a+=1
+
+        #for row 0 populate starting from index 1 with letters A through H
+        #populate everything else with - 
+
+    def moveA(self,position):
         """example: A0B1 moves the piece located at A0 to B1"""
         #defines a function to move the piece 
 
@@ -45,27 +57,25 @@ class CheckerBoard(object):
             #pass turn
         pass
 
-
-
-
-
-
-    def eat(position):
+    def eat(self,position):
          #defines an eat function for when the adjacent diagonal has an enemy
         #moves piece to new position and deletes enemy piece
         pass
 
-    def printBoardA():
+    def printBoard(self):
         #print every element in the area with a break between rows for player A
-        pass
+        for x in range(9):
+            for y in range(9):
+                print self.board[x][y],
+            print("")
 
-    def printBoardB():
+    def printBoardB(self):
         #print every element in the area with a break between rows for player B
         pass
 
 
 game=CheckerBoard()
-game.printBoard
+game.printBoard()
 
 
 
