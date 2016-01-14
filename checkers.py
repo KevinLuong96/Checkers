@@ -88,12 +88,19 @@ class CheckerBoard(object):
     def checkInitial(self, position):
         #determine if the input piece is legitimate
         # if string.uppercase.index(position[0])
+
+        if position[0] not in string.uppercase[0:8] or\
+         int(position[1]) < 1 or int(position[1]) > 8:
+            print ("Initial space must be within the board ")
+            return False
+
         startX = int(string.uppercase.index(position[0]) + 1)
         startY = int(position[1])
 
         if(self.board[startX][startY]) != ('x' or 'o' or 'X' or 'O'):
             print("The initial space is not a piece")
             return False
+
         return True
 
     def checkFinal(self, position):
@@ -103,19 +110,22 @@ class CheckerBoard(object):
         endX = int(string.uppercase.index(position[2]) + 1)
         endY = int(position[3])
 
-
+        if position[2] not in string.uppercase or position[3] < 1 or\
+        int(position[3]) < 1or int(position[3]) > 8:
+            print("Ending space must be within the board")
+            return False
 
         #--------------------------TO DO ----------
         #Determine if the final position is legal
-        
-        if self.board[endX][endY] != ('x' or 'o' or 'X' or 'O' or '-'):
-        #brackets were necessary around conditions or else it did != x 
-        #check true or false, then check or o or X 
-        # or \
-            print("The ending space is off of the board")
-            print(self.board[endX][endY])
-            print(self.board[startX][startY])
-            return False
+
+        #--- redundant code, if input is properly determined, players will not
+        #--- be able to try to move pieces outside of board
+        # if self.board[endX][endY] != '-' and 'x' and 'o' and 'X' and 'O':
+        # # or \
+        #     print("The ending space is off of the board")
+        #     print(self.board[endX][endY])
+        #     print(self.board[startX][startY])
+        #     return False
 
 
         # elif self.board[endX][endY] == self.board[startX][startY]:
@@ -147,9 +157,15 @@ class CheckerBoard(object):
         elif self.oPieces == 0:
         #     print("Player 1 wins!")
             return True
-        #else return false
-
+        
         return False
+
+        # ----------------------REMOVE WHEN DONE TESTING------------------------
+        # return 
+
+#   ----------------------------REMOVE WHEN DONE TESTING ------------
+    def finishGame(self):
+        self.xPieces = 0
 
 
 def main():
@@ -159,14 +175,19 @@ def main():
 
     player1Turn = True
 
-    while(game.checkWin() or game.checkWin())== False:
+    while game.checkWin() == False:
 
         if player1Turn == True:
             #allow player one to move O pieces and track numbers
             player1Move = raw_input("Input a place to move your piece (A2B3)")
-            while len(player1Move) !=4 or (game.checkInitial(player1Move) == False or \
-            game.checkFinal(player1Move)) == False:
+            while len(player1Move) !=4:
+                print("Input must be four characters long")
+                player1Move = raw_input("Input a place to move your piece (A@B3)")
+
+            while game.checkInitial(player1Move) == False or\
+            game.checkFinal(player1Move) == False:
                 player1Move = raw_input("Input a place to move your piece (A2B3)")
+
             game.moveO(player1Move)
 
             player1Turn == False
@@ -174,16 +195,12 @@ def main():
         else:
             player1Turn == True
 
-        player1Pieces = 0
 
         #implement the turn system, player 1 can only move pieces o or O
         #player 2 can only move pieces x or X
         game.printBoard()
 
-    if player1Pieces == 0:
-        print("Player 1 wins!")
 
-    else: print("Player 2 wins!")
 
     return
 
