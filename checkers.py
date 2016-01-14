@@ -3,46 +3,47 @@ import string
 class CheckerBoard(object):
     # Creates the board array and populates it with checker piece objects
 
-    def __init__(self, ):
+    def __init__(self ):
         #create and label the board
+        self.xPieces = self.oPieces = 12
+        self.isKing = False
         self.board = []
+
 
         for x in range(9):
             self.board.append([])
 
         for row in self.board:
             for i in range(9):
-                row.append('-');
+                row.append('-')
 
         #label the x axis with capital letters from A through H
         for x in range (1,9):
-            self.board[0][x] = string.uppercase[x-1]
+            self.board[x][0] = string.uppercase[x-1]
 
         #label the y axis with numbers from 1 through 8
         a = 1;
         for y in range (1,9):
-            self.board[y][0] = a
+            self.board[0][y] = a
             a+=1
 
         for x in range(1,9,2):
-            self.board[1][x] = 'x'
-            self.board[2][x+1] = 'x'
-            self.board[3][x] = 'x'
+            self.board[x+1][1] = 'x'
+            self.board[x][2] = 'x'
+            self.board[x+1][3] = 'x'
 
         for x in range(1,9,2):
-            self.board[6][x] = 'o'
-            self.board[7][x+1] = 'o'
-            self.board[8][x] = 'o'
+            self.board[x][6] = 'o'
+            self.board[x+1][7] = 'o'
+            self.board[x][8] = 'o'
 
-        pieces1 = pieces2 = 12
+        #pieces1 = pieces2 = 12
+        #moved functionality to main
 
-    def moveA(self,position, piece):
+    def moveO(self,position):
         """example: A0B1 moves the piece located at A0 to B1"""
-        #defines a function to move the piece to the location
-        #piece allows one player to only control one type of piece
+        #defines a function to move the o or O piece to the location
 
-
-        #while position.length != 4:
             #loop until a valid entry is entered
             #print("Enter a valid position: ex. A0B1")
         #if true:
@@ -61,37 +62,90 @@ class CheckerBoard(object):
         #elif true:
             #input King functionality, allowing it to move backwards
 
-            #change initial position back to -, new position to o or x, delete eaten 
-            #pieces
+            #change initial position back to -, new position to o or x, delete 
+            #eaten pieces
 
 
             #pass turn
+        #if move is called on a space two units away and there is an x in the 
+        #closer space, call eat function on x 
         pass
 
     def eat(self,position):
          #defines an eat function for when the adjacent diagonal has an enemy
         #moves piece to new position and deletes enemy piece
+        #create eat more boolean to determine if eat can be called again or pass
         pass
 
     def printBoard(self):
         #print every element in the area with a break between rows for player A
-        for x in range(9):
-            for y in range(9):
+        for y in range(9):
+            for x in range(9):
                 print self.board[x][y],
             print("")
 
-    def printBoardB(self):
-        #print every element in the area with a break between rows for player B
-        pass
+
+    def checkInitial(self, position):
+        #determine if the input piece is legitimate
+        # if string.uppercase.index(position[0])
+        startX = int(string.uppercase.index(position[0]) + 1)
+        startY = int(position[1])
+
+        if(self.board[startX][startY]) != ('x' or 'o' or 'X' or 'O'):
+            print("The initial space is not a piece")
+            return False
+        return True
+
+    def checkFinal(self, position):
+        #determine if the final position is legitimate
+        startX = int(string.uppercase.index(position[0]) + 1)
+        startY = int(position[1])
+        endX = int(string.uppercase.index(position[2]) + 1)
+        endY = int(position[3])
+
+
+
+        #--------------------------TO DO ----------
+        #Determine if the final position is legal
+        
+        if self.board[endX][endY] != ('x' or 'o' or 'X' or 'O' or '-'):
+        #brackets were necessary around conditions or else it did != x 
+        #check true or false, then check or o or X 
+        # or \
+            print("The ending space is off of the board")
+            print(self.board[endX][endY])
+            print(self.board[startX][startY])
+            return False
+
+
+        # elif self.board[endX][endY] == self.board[startX][startY]:
+        #     print("There is an allied piece on that space") 
+        #     print(self.board[endX][endY])
+        #     print(self.board[startX][startY])
+        #     return False
+
+        # elif abs(endX-startX) != (1 or 2) or abs(endY-startY) != (1 or 2) or\
+        # abs(endX-startX != endY-startY):
+        #     print("The move is must be 1x1 or 2x2 spaces away")
+        #     print(self.board[endX][endY])
+        #     print(self.board[startX][startY])
+        #     return False
+
+
+        
+
+
+        return True
+
 
     def checkWin(self):
         #return true if there are no more pieces for one player
-        if pieces1 == 0:
-            print("Player 2 wins!")
-            return True
+        if self.xPieces == 0:
+        #     print("Player 2 wins!")
+             return True
 
-        elif pieces2 == 0:
-            print("Player 1 wins!")
+        elif self.oPieces == 0:
+        #     print("Player 1 wins!")
             return True
         #else return false
 
@@ -103,16 +157,38 @@ def main():
     game= CheckerBoard()
     game.printBoard()
 
-    while(checkWin == False):
+    player1Turn = True
+
+    while(game.checkWin() or game.checkWin())== False:
+
+        if player1Turn == True:
+            #allow player one to move O pieces and track numbers
+            player1Move = raw_input("Input a place to move your piece (A2B3)")
+            while len(player1Move) !=4 or (game.checkInitial(player1Move) == False or \
+            game.checkFinal(player1Move)) == False:
+                player1Move = raw_input("Input a place to move your piece (A2B3)")
+            game.moveO(player1Move)
+
+            player1Turn == False
         #continue running the game loop until someone has won the game
+        else:
+            player1Turn == True
+
+        player1Pieces = 0
 
         #implement the turn system, player 1 can only move pieces o or O
         #player 2 can only move pieces x or X
+        game.printBoard()
+
+    if player1Pieces == 0:
+        print("Player 1 wins!")
+
+    else: print("Player 2 wins!")
+
     return
 
 
 main()
-
 
 
 #class Piece(object):
@@ -121,7 +197,7 @@ main()
   #def __init__(self, position, isKing):
     #defines the position variable to be stored and an isKing boolean
   #  self.position = position
-  #  self.isKing = false
+  #  self.isKing = False
 
   #def eat(location):
     #defines a function to allow checker pieces to eat others
