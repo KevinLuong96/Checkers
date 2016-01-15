@@ -110,7 +110,7 @@ class CheckerBoard(object):
         endX = int(string.uppercase.index(position[2]) + 1)
         endY = int(position[3])
 
-        if position[2] not in string.uppercase or position[3] < 1 or\
+        if position[2] not in string.uppercase[0:8] or position[3] < 1 or\
         int(position[3]) < 1or int(position[3]) > 8:
             print("Ending space must be within the board")
             return False
@@ -128,22 +128,27 @@ class CheckerBoard(object):
         #     return False
 
 
-        # elif self.board[endX][endY] == self.board[startX][startY]:
-        #     print("There is an allied piece on that space") 
-        #     print(self.board[endX][endY])
-        #     print(self.board[startX][startY])
-        #     return False
+        elif self.board[endX][endY] == self.board[startX][startY]:
+            print("There is an allied piece on that space") 
+            return False
 
-        # elif abs(endX-startX) != (1 or 2) or abs(endY-startY) != (1 or 2) or\
-        # abs(endX-startX != endY-startY):
-        #     print("The move is must be 1x1 or 2x2 spaces away")
-        #     print(self.board[endX][endY])
-        #     print(self.board[startX][startY])
-        #     return False
+        elif abs(endX-startX) not in [1,2] or abs(endY-startY) not in [1,2] or\
+        abs(endX-startX) != abs(endY-startY):
+            print("The move is must be 1x1 or 2x2 spaces away")
+            return False
 
+        elif self.board[endX][endY] != '-':
+            print("There is a destination is full")
+            return False
 
-        
+        elif self.board[startX][startY] in ['x','X']:
+            if self.board[(startX+endX)/2][(startY+endY)/2] in ['x','X','-']:
+                print "You can only move two spaces by eating an enemy piece"
+                return False
 
+        elif self.board[(startX+endX)/2][(startY+endY)/2] in ['y','Y','-']:
+            print "You can only move two spaces by eating an enemy piece"
+            return False
 
         return True
 
